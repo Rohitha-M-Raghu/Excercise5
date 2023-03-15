@@ -1,5 +1,6 @@
 package com.browser;
 import java.sql.Timestamp;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,14 +9,15 @@ import java.util.Scanner;
 import org.json.JSONArray;
 
 public class Browser {
+	
+	public Browser(String currentUrl) {
+		super();
+		this.currentUrl = currentUrl;
+	}
 
     private String currentUrl;
     private List<Bookmark> bookmarks = new ArrayList<>();
     private History history = new History();
-    
-    public Browser(String currentUrl) {
-        this.currentUrl = currentUrl;
-    }
     
     public String getCurrentUrl() {
     	return this.currentUrl;
@@ -37,10 +39,12 @@ public class Browser {
         if (bookmarks.isEmpty()) {
             System.out.println("No bookmarks found.");
         } else {
-            System.out.println("Bookmarks:");
+            System.out.println("\nBookmarks");
+            System.out.println("--------------");
             for (Bookmark bookmark : bookmarks) {
                 System.out.println(bookmark.getName() + " - " + bookmark.getUrl());
             }
+            System.out.println();
         }
     }
     
@@ -187,4 +191,5 @@ public class Browser {
 			choice = scanner.next().charAt(0);
 		}
     }
+
 }
