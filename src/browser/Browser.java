@@ -1,8 +1,9 @@
-package com.browser;
+package browser;
 import java.sql.Timestamp;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,25 +11,15 @@ import org.json.JSONArray;
 
 public class Browser {
 	
-	public Browser(String currentUrl) {
-		super();
-		this.currentUrl = currentUrl;
-	}
-
-    private String currentUrl;
     private List<Bookmark> bookmarks = new ArrayList<>();
     private History history = new History();
+    private VisitsHandling visitHandling;
     
-    public String getCurrentUrl() {
-    	return this.currentUrl;
-    }
-
-	public void goToUrl(String url) {
-        System.out.println("Navigating to " + url);
-        this.currentUrl = url;
-        history.addNewHistory(url);
-    }
-
+	public Browser(String homepage) {
+		super();
+		visitHandling = new VisitsHandling(homepage);
+	}
+    
     public void addBookmark(String name) {
         Bookmark bookmark = new Bookmark(name);
         bookmarks.add(bookmark);
@@ -72,7 +63,6 @@ public class Browser {
 
         public Bookmark(String name) {
             this.name = name;
-            this.url = currentUrl;
         }
 
         public String getName() {
@@ -84,90 +74,22 @@ public class Browser {
         }
     }
     
-    public static class History {
-    	private JSONArray browserHistory = new JSONArray();
-    	
-    	public void addNewHistory(String url, String ip) {		//add new History
-			JSONArray history = new JSONArray();
-			history.put(url);
-			history.put(ip);
-			Timestamp accessTime = Timestamp.from(Instant.now());
-			history.put(accessTime);
-			browserHistory.put(history);
-		}
-    	
-       	public void addNewHistory(String url) {
-       		JSONArray history = new JSONArray();
-			history.put(url);
-			Timestamp accessTime = Timestamp.from(Instant.now());
-			history.put(accessTime);
-			browserHistory.put(history);
-    	}
-    	
-    	public void displayHistory() {
-			if(browserHistory.length() == 0) {
-				System.out.println("No History To Display");
-				return;
-			}
-			System.out.println(" Browser History");
-			System.out.println("-------------------");
-			String history = browserHistory.toString();
-			int n = 0;
-			for(int i=1;i<history.length(); ++i) {
-				char ch = history.charAt(i);
-				if(ch == '[') {
-					n++;
-					System.out.print("\n" + n + "  ");
-				}
-				else if (ch == ']'){
-					System.out.println("");
-				}
-				else if(ch == ',') {
-					System.out.print("\t");
-				}
-				else {
-					System.out.print(ch);
-				}
-			}
-		}
-    	
-    	public void removeHistory(int n) {
-			browserHistory.remove(n-1);
-			System.out.println("Record removed Successfully...");
-		}
-    	
-    	public void resetHistory() {
-			while(this.browserHistory.length()> 0) {
-				browserHistory.remove(0);
-			}
-			System.out.println("History Reset Successfully... ");
-		}
-		public int getNumberOfRecords() {
-			return this.browserHistory.length();
-		}
-    }
-    
     public void historyMenu() {
 		Scanner scanner = new Scanner(System.in);
+		System.out.println("HISTORY");
+		System.out.println("=====================");
 		System.out.println("\n1. Display Browser History");
-		System.out.println("2. Add New History Entry");
-		System.out.println("3. Remove History Entry");
-		System.out.println("4. Reset History");
+		System.out.println("2. Remove History Entry");
+		System.out.println("3. Reset History");
 		System.out.print("Enter your Choice: ");
 		int option = scanner.nextInt();
 		
 		switch(option) {
 			case 1: history.displayHistory();
 					break;
-			case 2: System.out.print("Enter url: ");
-					String url = scanner.next();
-					System.out.print("Enter ip: ");
-					String ip = scanner.next();
-					history.addNewHistory(url, ip);
+			case 2: removeFromHistory();
 					break;
-			case 3: removeFromHistory();
-					break;
-			case 4: history.resetHistory();
+			case 3: history.resetHistory();
 					break;
 			default:System.out.println("Invalid Choice... ");
 		}
@@ -191,5 +113,58 @@ public class Browser {
 			choice = scanner.next().charAt(0);
 		}
     }
-
+    
+    public void visitURL(String url) {
+    	try {
+    		visitHandling.visit(url);
+    		history.addNewHistory(url);
+    		System.out.println("Navigate to " + url);
+    	}
+    	catch(Exception e) {
+    		System.out.println("Invalid URL.... Try Again!!!");
+    	}
+    }
+    
+    public String getCurrentURL() {
+    	return visitHandling.getCurrentURL();
+    }
+    
+    public String getURL() {
+    	Scanner scanner = new Scanner(System.in);
+    	System.out.print("Enter position:");
+    	int position = scanner.nextInt();
+    	try {
+			return visitHandling.getURL(position);
+		} catch (InvalidPositionException e) {
+			System.out.println(e);
+		}
+    	return "";
+    }
+    
+    public void actionForward() {
+    	Scanner scanner = new Scanner(System.in);
+    	System.out.print("Enter steps: ");
+    	int steps = scanner.nextInt();
+    	try {
+			String url = visitHandling.forward(steps);
+			history.addNewHistory(url);
+			System.out.println("Navigate to " + url);
+		} catch (NoHistoryFoundException e) {
+			System.out.println(e);
+		}
+    	
+    }
+    
+    public void actionBackward() {
+    	Scanner scanner = new Scanner(System.in);
+    	System.out.print("Enter steps: ");
+    	int steps = scanner.nextInt();
+    	try {
+			String url = visitHandling.backward(steps);
+			history.addNewHistory(url);
+			System.out.println("Navigate to " + url);
+		} catch (NoHistoryFoundException e) {
+			System.out.println(e);
+		}
+    }
 }

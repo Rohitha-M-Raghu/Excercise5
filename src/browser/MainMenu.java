@@ -1,4 +1,4 @@
-package com.browser;
+package browser;
 
 import java.util.Scanner;
 
@@ -11,25 +11,34 @@ public class MainMenu {
 		while(!quit) {
 			System.out.println("Main Menu");
 			System.out.println("===================");
-			System.out.println("1. Search url");
+			System.out.println("1. Visit url");
 			System.out.println("2. Current url");
-			System.out.println("3. Bookmarks");
-			System.out.println("4. History");
-			System.out.println("5. Quit");
+			System.out.println("3. Get url");
+			System.out.println("4. Forward");
+			System.out.println("5. Backward");
+			System.out.println("6. Bookmarks");
+			System.out.println("7. History");
+			System.out.println("8. Quit");
 			System.out.print("Enter your Choice: ");
 			int choice = scanner.nextInt();
 			switch (choice) {
 			case 1: System.out.print("Enter url: ");
 			        String url = scanner.next();
-			        browser.goToUrl(url);
+			        browser.visitURL(url);
 				break;
-			case 2: System.out.println(browser.getCurrentUrl());
+			case 2: System.out.println(browser.getCurrentURL());
 				break;
-			case 3: bookmarksMenu();
+			case 3: System.out.println(browser.getURL());
 				break;
-			case 4: browser.historyMenu();
+			case 4: browser.actionForward();
 				break;
-			case 5: System.out.println("Exiting Application....");
+			case 5: browser.actionBackward();
+				break;
+			case 6: bookmarksMenu();
+				break;
+			case 7: browser.historyMenu();
+				break;
+			case 8: System.out.println("Exiting Application....");
 					quit = true;
 				break;
 			default:
