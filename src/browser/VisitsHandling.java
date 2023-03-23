@@ -25,16 +25,21 @@ class InvalidPositionException extends Exception {
 public class VisitsHandling {
 	private List<String> history;
 	private int currentIndex;
+	private List<String> validURLEnding = new ArrayList<>();
 	
 	public VisitsHandling(String homepage) {
 		history = new ArrayList<>();
 		history.add(homepage);
 		currentIndex = 0;
+		validURLEnding.add("com");
+		validURLEnding.add("org");
+		validURLEnding.add("in");
 	}
 	
 	public void verifyURL(String url) throws InvalidURLException{
-		boolean isValid = url.endsWith(".com") || url.endsWith(".in") || url.endsWith(".org");
-		if(!isValid) {
+		boolean isValid = false;
+		int extensionPosition = url.lastIndexOf('.');
+		if(!validURLEnding.contains(url.substring(extensionPosition+1))) {
 			throw new InvalidURLException("Invalid URL");
 		}
 	}
@@ -52,22 +57,30 @@ public class VisitsHandling {
 	
 	public String forward(int steps) throws NoHistoryFoundException {
 		try {
+			if(steps<0) {
+				throw new IndexOutOfBoundsException("Steps cannot be negative...");
+			}
 			String url = history.get(currentIndex+steps);
 			currentIndex+=steps;
 			return url;
 		}
 		catch(IndexOutOfBoundsException e) {
+			System.out.println(e);
 			throw new NoHistoryFoundException("No History Found!!!");
 		}
 	}
 	
 	public String backward(int steps) throws NoHistoryFoundException {
 		try {
+			if(steps<0) {
+				throw new IndexOutOfBoundsException("Steps cannot be negative");
+			}
 			String url = history.get(currentIndex - steps);
 			currentIndex-=steps;
 			return url;
 		}
 		catch (IndexOutOfBoundsException e) {
+			System.out.println(e);
 			throw new NoHistoryFoundException("No History Found!!!");
 		}
 	}
