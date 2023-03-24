@@ -5,7 +5,7 @@ import java.time.Instant;
 
 import org.json.JSONArray;
 
-public class History {
+public class BrowserHistory {
 	private JSONArray browserHistory = new JSONArray();
 	
    	public void addNewHistory(String url) {
@@ -18,10 +18,10 @@ public class History {
 	
 	public void displayHistory() {
 		if(browserHistory.length() == 0) {
-			System.out.println("No History To Display");
+			System.out.println("No BrowserHistory To Display");
 			return;
 		}
-		System.out.println(" Browser History");
+		System.out.println(" Browser BrowserHistory");
 		System.out.println("-------------------");
 		String history = browserHistory.toString();
 		int n = 0;
@@ -52,7 +52,7 @@ public class History {
 		while(this.browserHistory.length()> 0) {
 			browserHistory.remove(0);
 		}
-		System.out.println("History Reset Successfully... ");
+		System.out.println("BrowserHistory Reset Successfully... ");
 	}
 	public int getNumberOfRecords() {
 		return this.browserHistory.length();

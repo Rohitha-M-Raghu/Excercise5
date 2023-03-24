@@ -14,7 +14,7 @@ import exceptions.*;
 public class Browser {
 	
     private List<Bookmark> bookmarks = new ArrayList<>();
-    private History history = new History();
+    private BrowserHistory browserHistory = new BrowserHistory();
     private VisitsHandling visitHandling;
     
 	public Browser(String homepage) {
@@ -80,18 +80,18 @@ public class Browser {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("HISTORY");
 		System.out.println("=====================");
-		System.out.println("\n1. Display Browser History");
-		System.out.println("2. Remove History Entry");
-		System.out.println("3. Reset History");
+		System.out.println("\n1. Display Browser BrowserHistory");
+		System.out.println("2. Remove BrowserHistory Entry");
+		System.out.println("3. Reset BrowserHistory");
 		System.out.print("Enter your Choice: ");
 		int option = scanner.nextInt();
 		
 		switch(option) {
-			case 1: history.displayHistory();
+			case 1: browserHistory.displayHistory();
 					break;
 			case 2: removeFromHistory();
 					break;
-			case 3: history.resetHistory();
+			case 3: browserHistory.resetHistory();
 					break;
 			default:System.out.println("Invalid Choice... ");
 		}
@@ -101,15 +101,15 @@ public class Browser {
     	Scanner scanner = new Scanner(System.in);
     	char choice = 'y';
 		while(choice == 'y') { 
-			if(history.getNumberOfRecords() == 0) {
+			if(browserHistory.getNumberOfRecords() == 0) {
 				System.out.println("\nNo records to delete...");
 				return;
 			}
 			else {
-				history.displayHistory();
+				browserHistory.displayHistory();
 				System.out.print("Enter the record to be removed: ");
 				int line = scanner.nextInt();
-				history.removeHistory(line);
+				browserHistory.removeHistory(line);
 			}
 			System.out.print("Do you want to continue adding more records(y/n): ");
 			choice = scanner.next().charAt(0);
@@ -119,7 +119,7 @@ public class Browser {
     public void visitURL(String url) {
     	try {
     		visitHandling.visit(url);
-    		history.addNewHistory(url);
+    		browserHistory.addNewHistory(url);
     		System.out.println("Navigate to " + url);
     	}
     	catch(Exception e) {
@@ -149,7 +149,7 @@ public class Browser {
     	int steps = scanner.nextInt();
     	try {
 			String url = visitHandling.forward(steps);
-			history.addNewHistory(url);
+			browserHistory.addNewHistory(url);
 			System.out.println("Navigate to " + url);
 		} catch (NoHistoryFoundException e) {
 			System.out.println(e);
@@ -163,7 +163,7 @@ public class Browser {
     	int steps = scanner.nextInt();
     	try {
 			String url = visitHandling.backward(steps);
-			history.addNewHistory(url);
+			browserHistory.addNewHistory(url);
 			System.out.println("Navigate to " + url);
 		} catch (NoHistoryFoundException e) {
 			System.out.println(e);

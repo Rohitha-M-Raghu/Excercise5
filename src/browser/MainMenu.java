@@ -3,7 +3,7 @@ package browser;
 import java.util.Scanner;
 
 public class MainMenu {
-	protected static Browser browser = new Browser("www.google.com");
+	private static Browser browser = new Browser("www.google.com");
 
 	public static void main(String[] args) {
 				Scanner scanner = new Scanner(System.in);
@@ -17,7 +17,7 @@ public class MainMenu {
 			System.out.println("4. Forward");
 			System.out.println("5. Backward");
 			System.out.println("6. Bookmarks");
-			System.out.println("7. History");
+			System.out.println("7. BrowserHistory");
 			System.out.println("8. Quit");
 			System.out.print("Enter your Choice: ");
 			int choice = scanner.nextInt();

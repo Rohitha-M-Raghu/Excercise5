@@ -1,10 +1,11 @@
 package browser;
 
 import java.util.ArrayList;
-
 import java.util.List;
-import java.util.Stack;
-import exceptions.*;
+
+import exceptions.InvalidPositionException;
+import exceptions.InvalidURLException;
+import exceptions.NoHistoryFoundException;
 
 public class VisitsHandling {
 	private List<String> history;
@@ -50,7 +51,7 @@ public class VisitsHandling {
 		}
 		catch(IndexOutOfBoundsException e) {
 			System.out.println(e);
-			throw new NoHistoryFoundException("No History Found!!!");
+			throw new NoHistoryFoundException("No BrowserHistory Found!!!");
 		}
 	}
 	
@@ -65,7 +66,7 @@ public class VisitsHandling {
 		}
 		catch (IndexOutOfBoundsException e) {
 			System.out.println(e);
-			throw new NoHistoryFoundException("No History Found!!!");
+			throw new NoHistoryFoundException("No BrowserHistory Found!!!");
 		}
 	}
 	
