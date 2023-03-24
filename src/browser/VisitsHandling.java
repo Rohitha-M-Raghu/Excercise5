@@ -1,26 +1,10 @@
 package browser;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Stack;
-
-class InvalidURLException extends Exception {
-	public InvalidURLException(String errorMessage) {
-		super(errorMessage);
-	}
-}
-
-class NoHistoryFoundException extends Exception {
-	public NoHistoryFoundException(String errorMessage) {
-		super(errorMessage);
-	}
-}
-
-class InvalidPositionException extends Exception {
-	public InvalidPositionException(String errorMessage) {
-		super(errorMessage);
-	}
-}
+import exceptions.*;
 
 public class VisitsHandling {
 	private List<String> history;

@@ -1,6 +1,7 @@
 package browser;
 import java.sql.Timestamp;
 
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.json.JSONArray;
+import exceptions.*;
 
 public class Browser {
 	
